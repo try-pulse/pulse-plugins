@@ -254,7 +254,14 @@ const index = JSON.parse((await load(args.index)).toString('utf8'))
 const listed = index.bundles?.find(b => b.id === BUNDLE_ID)
 if (!listed) fail(`no "${BUNDLE_ID}" bundle in the index`)
 if (!/^[0-9a-f]{64}$/.test(listed.sha256 ?? '')) fail('index entry has no sha256')
-const zipSrc = args.zip ?? new URL(listed.url, ORIGIN).href
+// The CDN in front of mcp.trypulse.tech caches /cli/bundles/codex-plugin.zip
+// despite `Cache-Control: no-store` and kept serving the previous release after
+// a deploy (measured 2026-09-30: fresh index, stale zip, sha256 mismatch). A
+// query unique to this release always misses that cache; the sha256 check
+// below still decides whether the bytes are the ones the index lists.
+const zipUrl = new URL(listed.url, ORIGIN)
+zipUrl.searchParams.set('sha256', listed.sha256)
+const zipSrc = args.zip ?? zipUrl.href
 if (!args.zip && !zipSrc.startsWith(`${ORIGIN}/`)) fail(`bundle url ${zipSrc} is not on ${ORIGIN}`)
 
 const zip = await load(zipSrc)

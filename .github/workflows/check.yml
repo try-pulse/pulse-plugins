@@ -1,0 +1,39 @@
+# Guard-rail tests for the sync script, plus a sanity check of the
+# marketplace file and the published plugin tree.
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request: {}
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Sync script tests
+        run: node --test scripts/sync.test.mjs
+
+      - name: Marketplace and plugin manifests
+        run: |
+          set -euo pipefail
+          node -e '
+            const fs = require("fs")
+            const mp = JSON.parse(fs.readFileSync(".agents/plugins/marketplace.json", "utf8"))
+            if (mp.name !== "pulse") throw new Error("marketplace name must stay \"pulse\" (plugin id pulse@pulse)")
+            for (const p of mp.plugins) {
+              const dir = p.source.path
+              const file = `${dir}/.codex-plugin/plugin.json`
+              if (!fs.existsSync(file)) { console.log(`${file} not published yet`); continue }
+              const m = JSON.parse(fs.readFileSync(file, "utf8"))
+              if (m.name !== p.name) throw new Error(`${file}: name ${m.name} != ${p.name}`)
+              console.log(`${p.name}@${mp.name} ${m.version}`)
+            }
+          '

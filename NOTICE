@@ -1,0 +1,11 @@
+Pulse plugins
+Copyright (c) 2026 Pulse
+
+The plugin manifests, skills and scripts in this repository are licensed under
+the MIT License (see LICENSE).
+
+The MIT License does not cover the Pulse name, the Pulse logos or other brand
+assets, including every image under plugins/*/assets/. They are trademarks of
+Pulse and are included only so that the plugin displays correctly in Codex. You
+may not use them to identify your own products or services, or in any way that
+suggests Pulse endorses you, without written permission from Pulse.

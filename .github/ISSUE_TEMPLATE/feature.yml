@@ -1,0 +1,24 @@
+name: Feature request
+description: A skill, a workflow or an improvement you would like the plugin to have.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What you are trying to do
+      description: The task in Pulse you want Codex to help with, and where it falls short today.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What would help
+      description: A new skill, a change to an existing one, or something else. Example prompts are welcome.
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where you run Codex
+      multiple: true
+      options:
+        - Codex CLI
+        - Codex in the ChatGPT desktop app

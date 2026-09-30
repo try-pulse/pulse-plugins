@@ -15,7 +15,8 @@
 //
 //   node scripts/sync.mjs --index ./index.json --zip ./codex-plugin.zip --dry-run
 //
-// Output (also written to $GITHUB_OUTPUT when set): changed=true|false, version=X.Y.Z
+// Output (also written to $GITHUB_OUTPUT when set): changed=true|false,
+// version=X.Y.Z, sha256=<verified zip hash> (used in the GitHub Release notes)
 
 import { createHash } from 'node:crypto'
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync, appendFileSync } from 'node:fs'
@@ -307,7 +308,7 @@ if (published !== null) {
   if (order === 0) {
     if (sameTree(files, readTree(dest))) {
       console.log(`sync: ${version} is already published`)
-      output({ changed: 'false', version })
+      output({ changed: 'false', version, sha256: sha })
       process.exit(0)
     }
     fail(`bundle ${version} differs from the published ${version}: releases must bump the version`)
@@ -317,7 +318,7 @@ if (published !== null) {
 
 if (args.dryRun) {
   console.log(`sync: dry run, would publish ${version} (published: ${published ?? 'none'})`)
-  output({ changed: 'true', version })
+  output({ changed: 'true', version, sha256: sha })
   process.exit(0)
 }
 
@@ -328,4 +329,4 @@ for (const [rel, data] of files) {
   writeFileSync(abs, data)
 }
 console.log(`sync: wrote ${files.size} files to ${path.relative(ROOT, dest)} (${published ?? 'none'} -> ${version})`)
-output({ changed: 'true', version })
+output({ changed: 'true', version, sha256: sha })

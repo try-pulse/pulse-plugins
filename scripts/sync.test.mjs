@@ -117,6 +117,7 @@ test('a clean bundle publishes and drops the zip marketplace file', () => {
   const r = run(bundle())
   assert.equal(r.code, 0, r.out)
   assert.match(r.out, /changed=true/)
+  assert.match(r.out, /^sha256=[0-9a-f]{64}$/m) // the release notes quote it
   assert.ok(existsSync(path.join(r.dest, '.codex-plugin/plugin.json')))
   assert.ok(existsSync(path.join(r.dest, 'assets/pulse-logo.png')))
   assert.ok(!existsSync(path.join(r.dest, '.agents')))

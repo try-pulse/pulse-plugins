@@ -1,5 +1,10 @@
 # Pulse plugins
 
+[![check](https://github.com/try-pulse/pulse-plugins/actions/workflows/check.yml/badge.svg)](https://github.com/try-pulse/pulse-plugins/actions/workflows/check.yml)
+[![sync](https://github.com/try-pulse/pulse-plugins/actions/workflows/sync.yml/badge.svg)](https://github.com/try-pulse/pulse-plugins/actions/workflows/sync.yml)
+[![release](https://img.shields.io/github/v/release/try-pulse/pulse-plugins?label=pulse)](https://github.com/try-pulse/pulse-plugins/releases/latest)
+[![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+
 The public [Codex](https://developers.openai.com/codex) plugin marketplace for
 [Pulse](https://www.trypulse.tech/). The `pulse` plugin connects Codex to your
 Pulse workspace. It adds the Pulse MCP server (issues, projects, initiatives,
@@ -15,8 +20,25 @@ codex mcp login pulse
 ```
 
 `codex mcp login pulse` opens your browser to sign in to Pulse with OAuth, so
-there are no keys to paste. Start a new Codex thread afterwards and ask, for
-example, *"Use Pulse to triage my team's backlog."*
+there are no keys to paste. Requires Codex 0.147 or later.
+
+## Get started
+
+Start a new Codex thread after installing.
+
+- **ChatGPT desktop app:** choose **Set up** on the Pulse plugin.
+- **Codex CLI:** type `$pulse:pulse-get-started`.
+
+The setup skill checks that you are signed in, confirms your workspace and
+teams, and suggests a few read-only starting points. It changes nothing in
+Pulse. After that, ask in your own words, for example:
+
+- *"Use Pulse to triage my team's backlog and surface blocked work."*
+- *"Use Pulse to find at-risk projects and explain the deadline pressure."*
+- *"Use Pulse to create an issue for the login timeout bug."*
+
+The skills confirm with you before they write to Pulse, and delete tools are
+marked as destructive so Codex asks before running them.
 
 Plugins load in the Codex CLI and in Codex inside the ChatGPT desktop app. The
 Codex IDE extension (VS Code, JetBrains) does not load plugins. There you can
@@ -63,9 +85,10 @@ pulse uninstall --codex
 | Path | What it is |
 |---|---|
 | `.agents/plugins/marketplace.json` | The marketplace, named `pulse`, so the plugin id is `pulse@pulse` |
-| `plugins/pulse/` | The plugin: `.codex-plugin/plugin.json` (with the MCP server entry), `skills/`, `assets/` |
+| `plugins/pulse/` | The plugin: `plugin.json` and `mcp.json` (the portable manifest and the MCP server), `.codex-plugin/plugin.json` (the same plugin for older Codex), `skills/`, `assets/` |
+| `scripts/setup-repo.sh` | One-time GitHub settings for maintainers (rulesets, security features) |
 | `scripts/sync.mjs` | Publishes each Pulse release into `plugins/pulse/` after its checks pass |
-| `.github/workflows/` | `sync` (hourly and on demand) and `check` (the sync tests) |
+| `.github/workflows/` | `sync` (hourly and on demand; also creates the GitHub Release) and `check` (the sync tests) |
 
 ### How releases get here
 
@@ -81,15 +104,18 @@ hour the `sync` workflow downloads that zip and publishes it after these checks:
 - no file contains credentials (auth headers, access keys, private keys);
 - the version is newer than the published one.
 
-Each release is one commit, `release: pulse X.Y.Z`, plus an annotated tag
-`pulse/vX.Y.Z`. If any check fails, nothing is published.
+Each release is one commit, `release: pulse X.Y.Z`, an annotated tag
+`pulse/vX.Y.Z` and a [GitHub Release](https://github.com/try-pulse/pulse-plugins/releases)
+listing the skills and the bundle's sha256. If any check fails, nothing is published.
 
 ## Contributing and support
 
 This repository is generated from Pulse's own source, so pull requests that
 change `plugins/` cannot be merged; the next release would overwrite them.
-Please [open an issue](https://github.com/try-pulse/pulse-plugins/issues) or
-write to [support@trypulse.tech](mailto:support@trypulse.tech) instead.
+Please [open an issue](https://github.com/try-pulse/pulse-plugins/issues/new/choose) or
+write to [support@trypulse.tech](mailto:support@trypulse.tech) instead. See
+[CONTRIBUTING.md](CONTRIBUTING.md) for what can change here, and
+[SECURITY.md](SECURITY.md) to report a vulnerability privately.
 
 ## License
 

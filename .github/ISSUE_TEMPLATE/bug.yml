@@ -1,0 +1,60 @@
+name: Bug report
+description: The plugin does not install, a skill misbehaves, or Pulse tools are missing in Codex.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. Please do not paste access tokens, workspace
+        content or anything else private. Security issues go through
+        [private reporting](https://github.com/try-pulse/pulse-plugins/security/advisories/new) instead.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: What you did, what you expected, and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: plugin-version
+    attributes:
+      label: Plugin version
+      description: The `version` in `plugins/pulse/.codex-plugin/plugin.json`, or the release tag you pinned.
+      placeholder: "1.47.0"
+    validations:
+      required: true
+  - type: input
+    id: codex-version
+    attributes:
+      label: Codex version
+      description: Output of `codex --version`.
+      placeholder: "codex-cli 0.159.2"
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where you run Codex
+      options:
+        - Codex CLI
+        - Codex in the ChatGPT desktop app
+        - Codex IDE extension (plugins are not supported there)
+    validations:
+      required: true
+  - type: dropdown
+    id: install
+    attributes:
+      label: How you installed the plugin
+      options:
+        - This marketplace (pulse@pulse)
+        - Pulse CLI, pulse install --codex (pulse@personal)
+        - Both
+        - Only the MCP server (codex mcp add)
+    validations:
+      required: true
+  - type: textarea
+    id: output
+    attributes:
+      label: Command output
+      description: For example `codex plugin list`, `codex mcp list`, or the error Codex showed. Remove anything private first.
+      render: shell

@@ -53,3 +53,61 @@ jobs:
           git tag -a "${tag}" -m "pulse ${VERSION}"
           git push --atomic origin HEAD:main "refs/tags/${tag}"
           echo "Published ${tag}" >> "$GITHUB_STEP_SUMMARY"
+
+      # Runs on every sync, not only when something was published: if creating
+      # the release failed last time, the next run creates it for the tag that
+      # is already there. A push made with GITHUB_TOKEN does not trigger other
+      # workflows, so this cannot live in a separate on-tag workflow.
+      - name: GitHub Release
+        if: steps.sync.outputs.version != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.sync.outputs.version }}
+          SHA256: ${{ steps.sync.outputs.sha256 }}
+        run: |
+          set -euo pipefail
+          tag="pulse/v${VERSION}"
+          if ! git ls-remote --exit-code --tags origin "refs/tags/${tag}" >/dev/null; then
+            echo "${tag} is not published; no release to create"
+            exit 0
+          fi
+          if gh release view "${tag}" >/dev/null 2>&1; then
+            echo "Release ${tag} already exists"
+            exit 0
+          fi
+          notes="${RUNNER_TEMP}/notes.md"
+          {
+            echo "Pulse plugin for Codex, version ${VERSION}."
+            echo
+            echo '### Install'
+            echo
+            echo '```bash'
+            echo 'codex plugin marketplace add try-pulse/pulse-plugins'
+            echo 'codex plugin add pulse@pulse'
+            echo 'codex mcp login pulse'
+            echo '```'
+            echo
+            echo '### Update an existing install'
+            echo
+            echo '```bash'
+            echo 'codex plugin marketplace upgrade pulse'
+            echo '```'
+            echo
+            echo "Pin this release with \`--ref ${tag}\` on \`codex plugin marketplace add\`."
+            echo
+            echo '### Skills'
+            echo
+            for dir in plugins/pulse/skills/*/; do
+              echo "- \`pulse:$(basename "${dir}")\`"
+            done
+            echo
+            echo '### Provenance'
+            echo
+            echo "Published from https://mcp.trypulse.tech/cli/bundles/codex-plugin.zip after its checks passed."
+            if [ -n "${SHA256}" ]; then
+              echo "Bundle sha256: \`${SHA256}\`"
+            fi
+          } > "${notes}"
+          gh release create "${tag}" --verify-tag --latest \
+            --title "pulse ${VERSION}" --notes-file "${notes}"
+          echo "Released ${tag}" >> "$GITHUB_STEP_SUMMARY"

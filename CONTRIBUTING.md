@@ -1,6 +1,7 @@
 # Contributing
 
-Thanks for helping improve the Pulse plugin for Codex.
+Thanks for helping improve the Pulse plugin for Codex. Everyone taking part
+here follows our [code of conduct](CODE_OF_CONDUCT.md).
 
 ## What can change here
 

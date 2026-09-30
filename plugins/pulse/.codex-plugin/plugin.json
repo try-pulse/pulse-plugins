@@ -1,6 +1,6 @@
 {
   "name": "pulse",
-  "version": "1.48.0",
+  "version": "1.48.1",
   "description": "Pulse project management for Codex — the Pulse MCP server (issues, projects, initiatives, OKRs, documents, analytics) plus skills for planning, delivery management and issue triage.",
   "author": {
     "name": "Pulse",

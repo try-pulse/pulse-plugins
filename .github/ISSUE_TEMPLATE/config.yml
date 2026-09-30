@@ -3,9 +3,6 @@ contact_links:
   - name: Report a security issue
     url: https://github.com/try-pulse/pulse-plugins/security/advisories/new
     about: Report vulnerabilities privately. Please do not open a public issue.
-  - name: Pulse support
-    url: mailto:support@trypulse.tech
-    about: Questions about your Pulse account, workspace or billing.
-  - name: Pulse website
+  - name: Pulse website and support
     url: https://www.trypulse.tech/
-    about: Product information.
+    about: Product information. For your account, workspace or billing, email support@trypulse.tech.

@@ -105,7 +105,7 @@ jobs:
             echo
             echo "Published from https://mcp.trypulse.tech/cli/bundles/codex-plugin.zip after its checks passed."
             if [ -n "${SHA256}" ]; then
-              echo "Bundle sha256: \`${SHA256}\`"
+              echo "sha256 of the verified bundle: \`${SHA256}\`"
             fi
           } > "${notes}"
           gh release create "${tag}" --verify-tag --latest \

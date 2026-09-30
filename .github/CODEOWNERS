@@ -1,0 +1,3 @@
+# Every change outside plugins/ needs a maintainer's review. plugins/ is
+# written by the sync workflow only (see CONTRIBUTING.md).
+*   @alireza-attari

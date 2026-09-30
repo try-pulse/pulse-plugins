@@ -4,6 +4,7 @@
 [![sync](https://github.com/try-pulse/pulse-plugins/actions/workflows/sync.yml/badge.svg)](https://github.com/try-pulse/pulse-plugins/actions/workflows/sync.yml)
 [![release](https://img.shields.io/github/v/release/try-pulse/pulse-plugins?label=pulse)](https://github.com/try-pulse/pulse-plugins/releases/latest)
 [![license](https://img.shields.io/badge/license-MIT-blue)](LICENSE)
+[![OpenSSF Scorecard](https://api.scorecard.dev/projects/github.com/try-pulse/pulse-plugins/badge)](https://scorecard.dev/viewer/?uri=github.com/try-pulse/pulse-plugins)
 
 The public [Codex](https://developers.openai.com/codex) plugin marketplace for
 [Pulse](https://www.trypulse.tech/). The `pulse` plugin connects Codex to your
@@ -88,7 +89,7 @@ pulse uninstall --codex
 | `plugins/pulse/` | The plugin: `plugin.json` and `mcp.json` (the portable manifest and the MCP server), `.codex-plugin/plugin.json` (the same plugin for older Codex), `skills/`, `assets/` |
 | `scripts/setup-repo.sh` | One-time GitHub settings for maintainers (rulesets, security features) |
 | `scripts/sync.mjs` | Publishes each Pulse release into `plugins/pulse/` after its checks pass |
-| `.github/workflows/` | `sync` (hourly and on demand; also creates the GitHub Release) and `check` (the sync tests) |
+| `.github/workflows/` | `sync` (hourly and on demand; also creates the GitHub Release), `check` (the sync tests), `codeql` and `scorecard` (security analysis) |
 
 ### How releases get here
 

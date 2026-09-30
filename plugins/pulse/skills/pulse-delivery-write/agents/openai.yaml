@@ -1,0 +1,11 @@
+interface:
+  display_name: "Pulse Delivery Write"
+  short_description: "Create, update, or delete Pulse work items safely"
+  default_prompt: "Use $pulse:pulse-delivery-write to create or update an issue, project, initiative, objective, or document in Pulse."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for creating and updating projects, issues, initiatives, OKRs, metrics, and documents."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

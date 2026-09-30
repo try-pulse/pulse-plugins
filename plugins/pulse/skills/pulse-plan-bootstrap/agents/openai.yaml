@@ -1,0 +1,11 @@
+interface:
+  display_name: "Plan Bootstrap"
+  short_description: "Set up Pulse tracking for a body of work"
+  default_prompt: "Use $pulse:pulse-plan-bootstrap to set up Pulse tracking for this plan: objective, projects, milestones, issues."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for objectives, key results, projects, milestones, and issues."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

@@ -1,0 +1,11 @@
+interface:
+  display_name: "Issue Triage"
+  short_description: "Triage a Pulse backlog, sprint, or bug list"
+  default_prompt: "Use $pulse:pulse-issue-triage to review my team's backlog in Pulse and surface blocked work."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for issues, cycles, projects, teams, and users."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

@@ -1,0 +1,11 @@
+interface:
+  display_name: "Pulse MCP Reference"
+  short_description: "Pulse MCP conventions: names, scope, filters, confirmations"
+  default_prompt: "Use $pulse:pulse-use-mcp to choose the right Pulse tool, resolve names, and apply filters safely."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for reading and updating Pulse workspace data."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

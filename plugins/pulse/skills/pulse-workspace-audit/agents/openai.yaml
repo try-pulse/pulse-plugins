@@ -1,0 +1,11 @@
+interface:
+  display_name: "Workspace Audit"
+  short_description: "Score and repair how a team tracks work in Pulse"
+  default_prompt: "Use $pulse:pulse-workspace-audit to score how well our team tracks work in Pulse and propose fixes."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for objectives, projects, issues, milestones, and status updates."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

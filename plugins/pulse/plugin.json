@@ -1,0 +1,50 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "pulse",
+  "version": "1.47.0",
+  "description": "Pulse project management for Codex — the Pulse MCP server (issues, projects, initiatives, OKRs, documents, analytics) plus skills for planning, delivery management and issue triage.",
+  "author": {
+    "name": "Pulse",
+    "email": "support@trypulse.tech",
+    "url": "https://www.trypulse.tech/"
+  },
+  "homepage": "https://www.trypulse.tech/",
+  "repository": "https://github.com/try-pulse/pulse-plugins",
+  "license": "MIT",
+  "keywords": [
+    "pulse",
+    "project-management",
+    "mcp",
+    "triage",
+    "planning",
+    "delivery",
+    "okr"
+  ],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Pulse",
+        "shortDescription": "Plan, triage and ship in Pulse",
+        "longDescription": "Connect Codex to your Pulse workspace. Sign in once with browser OAuth (`codex mcp login pulse`) — no tokens to copy. Then list and triage issues, review project health and deadline risk, snapshot initiatives and OKRs, read and write documents, and create or update delivery work through the Pulse MCP server. Skills guide each workflow and every write is confirmation-first: destructive tools are annotated so Codex asks before deleting. Install from the public marketplace with `codex plugin marketplace add try-pulse/pulse-plugins` and `codex plugin add pulse@pulse`, and update with `codex plugin marketplace upgrade pulse`. Or register the server alone with `codex mcp add pulse --url https://mcp.trypulse.tech/mcp --oauth-resource https://mcp.trypulse.tech/mcp`.",
+        "developerName": "Pulse",
+        "category": "Productivity",
+        "brandColor": "#7467E8",
+        "composerIcon": "./assets/pulse-composer.png",
+        "logo": "./assets/pulse-logo.png",
+        "logoDark": "./assets/pulse-logo-dark.png",
+        "capabilities": [
+          "List, triage and update issues, projects, initiatives and OKRs",
+          "Read and write Pulse documents and status updates",
+          "Search workspace knowledge with citations"
+        ],
+        "websiteURL": "https://www.trypulse.tech/",
+        "defaultPrompt": [
+          "Use Pulse to triage my team's backlog and surface blocked work.",
+          "Use Pulse to find at-risk projects and explain the deadline pressure.",
+          "Use Pulse to create or update an issue, project or initiative."
+        ]
+      },
+      "onboardingSkill": "./skills/pulse-get-started/SKILL.md"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+interface:
+  display_name: "Pulse Cadence Check"
+  short_description: "Health check: what is slipping and needs an update"
+  default_prompt: "Use $pulse:pulse-cadence to check what is slipping in Pulse and whether a status update is due."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for key results, metrics, projects, issues, and status updates."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

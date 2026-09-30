@@ -1,0 +1,13 @@
+interface:
+  display_name: "Pulse Assistant"
+  short_description: "End-to-end Pulse project management assistant"
+  default_prompt: "Use $pulse:pulse-assistant to review Pulse strategy, delivery health, and the next actions to take."
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for projects, issues, initiatives, objectives, metrics, documents, and analytics."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

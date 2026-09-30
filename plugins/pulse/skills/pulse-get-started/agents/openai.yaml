@@ -1,0 +1,13 @@
+interface:
+  display_name: "Set up Pulse"
+  short_description: "Connect Pulse and check your workspace and teams"
+  default_prompt: "Use $pulse:pulse-get-started to confirm my Pulse sign-in and workspace, then suggest a first step."
+policy:
+  allow_implicit_invocation: false
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for the current user, workspace, teams and repositories."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

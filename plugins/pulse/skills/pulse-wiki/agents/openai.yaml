@@ -1,0 +1,11 @@
+interface:
+  display_name: "Pulse Wiki"
+  short_description: "Manage a team's pinned wiki documents in Pulse"
+  default_prompt: "Use $pulse:pulse-wiki to organize a team's pinned resources and wiki folders in Pulse."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for team wiki directories, folders, memberships, and documents."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

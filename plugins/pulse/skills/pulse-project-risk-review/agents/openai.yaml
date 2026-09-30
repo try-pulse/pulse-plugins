@@ -1,0 +1,11 @@
+interface:
+  display_name: "Project Risk Review"
+  short_description: "Find risky Pulse projects and explain why"
+  default_prompt: "Use $pulse:pulse-project-risk-review to find at-risk projects in Pulse and explain the deadline pressure."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for projects, status updates, dependencies, and analytics."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

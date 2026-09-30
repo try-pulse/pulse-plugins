@@ -1,0 +1,11 @@
+interface:
+  display_name: "Initiative Snapshot"
+  short_description: "Summarize Pulse initiatives and their OKR linkage"
+  default_prompt: "Use $pulse:pulse-initiative-snapshot to summarize the status of our strategic initiatives in Pulse."
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "pulse"
+      description: "Pulse MCP server for initiatives, objectives, key results, and linked projects."
+      transport: "streamable_http"
+      url: "https://mcp.trypulse.tech/mcp"

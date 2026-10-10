@@ -65,11 +65,11 @@ Rules when `is_personal=true`:
 
 Lifecycle:
 
-- `is_personal` is accepted only on create (`pulse_save_issue` / `pulse_save_project` without an id or query) and **cannot** be changed on update. To "convert" an item, recreate it with the desired scope.
+- Issue `is_personal` is accepted only on create and cannot be changed on update. Project scope follows team links: adding its first team shares it; `clear_teams` makes it personal. Confirm project visibility changes first.
 
 Filtering and listing:
 
-- `pulse_list_issues` and `pulse_list_projects` accept `is_personal: true | false` (eq only, no operator).
+- `pulse_list_issues` accepts `is_personal` with `eq`; `pulse_list_projects` accepts `eq` and `ne`. Both preserve explicit `false`.
 - `true` → only the caller's personal items. `false` → only team-scoped items. Omit → both within the caller's RLS scope.
 - For "my personal tasks", pass `assignee_name: "me"` / `owner_name: "me"` — the SESSION block already names you; do not call `pulse_get_current_user`.
 
@@ -135,7 +135,7 @@ Filtering and listing:
 - Initiative relationships: `objective`, `key_results`, `projects`
 - Project relationships: `depends_on`, `blocks`, `blocked_by`
 - Issue relationships: `parent`, sub-issues, `blocks`, `blocked_by`
-- Write tools replace relationship arrays when new arrays are provided; `add_*` / `remove_*` (issue labels, blocks, blocked_by, releases; project initiatives and teams) change one member and keep the rest — never both for one relation
+- Write tools replace relationship arrays when new arrays are provided; `add_*` / `remove_*` (issue labels, blocks, blocked_by, releases; project initiatives and teams) change one member and keep the rest — never both for one relation. Project dependency edits can also use `dependency_mutation` for canonical add/remove or revision-checked incoming/outgoing replacement.
 - Use `clear_*` flags when removing values on update
 - **Intake requests:** `team_*` = incoming (the target team handles it); `requester_team_*` = outgoing. `pulse_act_on_request` (accept/reject/complete/triage/duplicate) needs a target-team manager. After accepting, create the work with `pulse_save_issue` / `pulse_save_project` + `request_ids` (a code or URL works).
 - **Text limits:** titles 5–7 words, no status/priority/date; `description` on issues, projects and initiatives is a ≤50-char title suffix; objectives and key results take 2000 chars of Markdown, a request body 500.

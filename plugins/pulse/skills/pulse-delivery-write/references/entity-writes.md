@@ -13,9 +13,9 @@ Project mutations can set or clear:
 - owner
 - initiative
 - `status`, `priority`, `progress`
-- `start_date`, `target_date`
+- `start_date`, `target_date`, and their `*_date_granularity` values (`day`, `month`, `quarter`, `half_year`, `year`)
 - labels
-- dependency links: `depends_on`, `blocks`, `blocked_by`
+- dependency links: `depends_on`, `blocks`, `blocked_by`; use `dependency_mutation` for canonical graph edits
 
 Notes:
 - Project lifecycle `status` is `idea | discovery | proposal | accepted | ready | in_progress | paused | maintenance | completed | canceled` and defaults to `idea`. Do not reuse issue statuses such as `backlog`, `todo`, `qa`, or `done`.
@@ -30,8 +30,9 @@ Notes:
 - `owner_id` defaults to the current authenticated user, whose id is in the SESSION block.
 - Visibility: backend RLS hides the project from everyone except the owner.
 - Allowed: status, priority, dates, progress, labels, and project-to-project dependency links (`depends_on`, `blocks`, `blocked_by`).
-- `is_personal` cannot be changed by `pulse_save_project`. To switch a project's scope, recreate it.
+- Project scope is derived from its team links: adding the first team shares a personal project; `clear_teams` makes it personal and resets lead, members, initiatives, and owner. Confirm this visibility change first. Issue personal scope still cannot be converted on update.
 - Filter with `is_personal=true|false` on `pulse_list_projects`.
+- `pulse_list_projects` also supports planning and relation filters such as `completed_at`, `latest_update_at`, milestone names, and dependency-state flags.
 
 ## Objective Writes
 

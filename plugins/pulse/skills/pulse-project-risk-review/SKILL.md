@@ -29,7 +29,7 @@ Never conflate project lifecycle `status` with project `health_status`.
    - Filter by `team_names`, `owner_names`, or `initiative_names` when possible.
 3. Query projects with risk-first thinking.
    - Prefer `health_statuses` when the user asks what is risky (values only — this field takes no is/is_not operator).
-   - For schedule pressure use `target_date` with `target_date_operator` (`lt`/`lte`/`gt`/`gte`). There is no progress FILTER — read `progress` off the returned rows, or `sort="progress"` to rank by it.
+   - For schedule pressure use `target_date` with `target_date_operator` (`lt`/`lte`/`gt`/`gte`), or `completed_at` / `latest_update_at` when completion or stale updates matter. There is no progress FILTER — read `progress` off the returned rows, or `sort="progress"` to rank by it.
 4. Inspect why each risky project is risky.
    - `health_status`
    - `target_date` and `start_date`
@@ -38,6 +38,7 @@ Never conflate project lifecycle `status` with project `health_status`.
    - missing owner/team context
    - dependency edges: `depends_on`, `blocked_by`, `blocks`
 5. Use `result_entities` and returned dependency projects to explain cross-project risk clearly.
+   - When the edge schedule matters, use `pulse_get_project` with `include_dependency_schedule=true` or `dependency_schedule_project_ids`; include `include_progress_graph=true` for historical progress and breakdowns.
 6. For graph-shaped questions ("what blocks this project", "what initiative is this part of", "what depends on this"), call `pulse_knowledge_neighbors` with the seed entity. Use `direction=inbound` for "what blocks / depends on X", `outbound` for "what does X depend on / block".
 7. For initiative drill-down or portfolio narrative across many linked projects, prefer `pulse_knowledge_context` (depth 2, max_nodes ~20) on the initiative seed over many sequential `pulse_read_knowledge` calls. Watch `total_chars` and tighten `depth` / `max_nodes` if the bundle is large.
 

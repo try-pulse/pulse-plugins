@@ -25,6 +25,7 @@ This skill covers Team Detail **Pinned resources**: a hidden immutable root coll
 | Create a wiki doc inside a folder | \`pulse_save_wiki_document\` |
 | Create a loose top-level team doc | \`pulse_save_wiki_document\` (to_team_root=true) |
 | File one/many existing docs into a folder | \`pulse_pin_wiki_document\` |
+| File existing docs and show on team Overview | \`pulse_pin_wiki_document\` (pinned_to_overview=true) |
 | Show / hide a doc on the team Overview | \`pulse_pin_team_overview\` (pinned_to_overview=true/false) |
 | What the team Overview shows | \`pulse_list_directory_memberships\` (team_name, pinned_to_overview=true) |
 | A team's Documents page (library + project docs) | \`pulse_list_documents\` (scope="team_documents", team_name) |
@@ -62,7 +63,7 @@ Sample confirmation:
 - **Pass \`team_name\`.** Every folder tool resolves it server-side; only when it reports \`ambiguous\` does \`pulse_list_teams\` (with \`search\`) pick the id — then ask the user which one.
 - **Membership id ≠ document id.** \`pulse_update_directory_membership\` and shares of \`resource_kind="membership"\` take the membership row id from \`pulse_list_directory_memberships\` — not the Content id.
 - **Hidden root ≠ visible top-level folder.** The hidden \`kind="root"\` collection stores loose docs and is immutable. Visible top-level folders have \`parent_id=""\`.
-- **Library membership ≠ team Overview.** New and filed documents start unpinned. Put one on the team page only when asked, with \`pulse_pin_team_overview\`; unpinning keeps it in the library, so never remove a membership to hide it from the Overview.
+- **Library membership ≠ team Overview.** New and filed documents start unpinned by default. When asked to add existing documents to Team resources on the Overview, use \`pulse_pin_wiki_document(pinned_to_overview=true)\`, even if they are already filed, or \`pulse_pin_team_overview\` for a placement-only change. Pinning uses the API-selected team placement, which may be another folder where the document already lives. Unpinning keeps it in the library, so never remove a membership to hide it from the Overview.
 - **Overview ≠ entity main doc.** Overview is the folder's \`home_content_id\`; entity main-doc state is an attachment flag. \`content_source\` drives the Linked badge. A row may be both Overview and Linked.
 - **Folder and document order are separate.** Reorder only one homogeneous sibling list at a time, normally to \`10,20,30,...\`.
 - **Version in place.** Wiki/body edits must use a tool that sends \`content_id\`; never create a new Content merely to edit an existing document.

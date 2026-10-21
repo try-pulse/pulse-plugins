@@ -22,7 +22,8 @@ Never conflate project lifecycle `status` with project `health_status`.
 
 ## Workflow
 
-1. Choose the entry point.
+1. Resolve requested project/team/portfolio scope using pulse-use-mcp; SESSION/repo/workspace names alone do not identify a Pulse project. Ask one targeted scope question only if ambiguous. Explicit complete-workspace reviews retain their full scope and page all relevant results or use complete aggregates; output ranking is not an investigation cap.
+   Choose the entry point within that scope.
    - Strategy framing or initiative names: start with `pulse_list_initiatives`
    - Delivery/risk framing: start with `pulse_list_projects`
 2. Scope the portfolio.

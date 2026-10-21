@@ -9,20 +9,14 @@ Use this skill before any non-trivial Pulse MCP task.
 
 ## The one rule that matters most
 
-**Every avoidable tool call costs a whole model turn.** The Pulse MCP server is
-fast — its API calls run in 60–340 ms — so the wall-clock cost of a Pulse task is
-almost entirely the number of round trips, not the server. Optimise for fewer,
-better calls:
+Avoid redundant round trips; batch independent reads and pass names directly:
 
 - **Pass human names, not ids.** Every create/update tool takes `team_name`,
   `project_name`, `assignee_name` (`"me"` works), `objective_name`,
   `parent_issue_query`, `milestone_query` and label names, and resolves them
-  **concurrently server-side with a 5-minute cache**. Do NOT call
-  `pulse_list_teams` / `pulse_list_users` / `pulse_list_project_options` first —
-  that turns one call into four and is strictly slower. Only call a selector
-  after a tool reports a name as `ambiguous` or `not_found`; the error lists the
-  candidates.
-- **Scope is already resolved.** The Pulse server instructions end in a SESSION
+  **concurrently server-side with a 5-minute cache**. Call selectors only after
+  `ambiguous` or `not_found`; the error lists candidates.
+- **Workspace scope is already resolved; project scope is not.** The Pulse server instructions end in a SESSION
   block naming the current user, the active workspace, and that workspace's
   teams. Hosts that show MCP instructions directly put it there; hosts that
   defer MCP tools behind `tool_search` show it inside that tool's description
@@ -137,16 +131,19 @@ Notes that are not obvious from the schemas:
 - For "top", "most important", or "highest priority" issues, use
   `pulse_list_issues(sort="priority", sort_order="asc")`. Priority is ranked
   `urgent -> high -> medium -> low -> no_priority`; descending is the reverse.
-- Make exactly one list call per requested view. Do not retry a successful list
-  just to repair its ordering. Separate calls are correct when the user
-  explicitly asks for different families, filters, sorts, pages, or comparison
-  views (for example priority and recency); keep all of those results.
+- Do not repeat a successful list to repair ordering. Separate families, filters,
+  sorts, pages and comparison views need separate calls; retain those results.
 - If one requested list is empty, report that briefly and continue with the
   other requested lists or single-entity reads. Do not repeat the empty lookup.
 - `pulse_save_issue` returns `id`, `code` and
   `main_doc_id` — never follow a write with a list call just to learn the code.
 
 ## Required Workflow
+
+Resolve the named/linked/current-task Pulse project first. A repo/workspace name
+alone is insufficient. If ambiguous, ask one scope question; do not scan the
+workspace to guess. Bounded discovery in relevant mapped repositories may continue.
+Use supported project/team/initiative filters; expand repos only for evidenced dependencies.
 
 1. **Scope** — read the SESSION block at the end of the Pulse server
    instructions (inside the `tool_search` description when tools are deferred). It already
@@ -166,7 +163,8 @@ Notes that are not obvious from the schemas:
    or a single-field write. A mandatory Knowledge pass on "move ENG-42 to QA" is
    two wasted turns.
 
-   When you do use it: judge relevance — top discover hits are often unrelated.
+   When you do use it: scope discovery first and read bodies only for material
+   candidates needed for the answer/edit. Top discover hits are often unrelated.
    Never answer from discover snippets alone; read the body. If nothing matches
    and the work is genuinely new, say so and proceed from the user's input.
 
@@ -206,17 +204,16 @@ Entry points for the inbox and the full relationship table: [references/domain-a
 Per-tool `detail` tiers, `result_entities`, label catalog rules and the documentation surfaces in full: [references/domain-and-shapes.md](references/domain-and-shapes.md).
 
 - Rows carry ids; the page-level `result_entities` carries the names. Ask for `detail: "full"` only for a field the trimmed shape drops.
-- Keep `limit` at 20 unless you need more; a result over ~100k characters is truncated.
+- Keep `limit` at 20 unless you need more; it controls page size, not total scope. A result over ~100k characters is truncated; recover omitted detail before relying on it.
 - `pulse_discover_knowledge` returns excerpts — read the hits with ONE `pulse_read_knowledge` call (`entities: [...]`, max 10) before answering, and cite them.
-- Titles: 5–7 words, no status, priority or date. `description` on issues, projects and initiatives is a ≤50-char title suffix, never documentation.
-- Labels come from the team's or the workspace's catalog (`pulse_list_labels`, names or ids); `pulse_save_label` creates a missing one.
-- Documentation lives in the MAIN document (`main_document`, or `is_main_doc: true`); comments are discussion; mentions (`<@USER_ID|Name>`) are the one place ids are needed up front.
-- A document body never opens with its own title — the page renders the title above it. First line is the first section (`## Story`) or the opening paragraph.
-- Search the matching list tool before creating; run Knowledge before judgement calls; `assignee_name: "me"` for your own work.
+- Search the matching list tool before creating. Titles, labels, descriptions and document surfaces follow the linked reference.
 
 
 ## Output Rules
 
+- Explicit full-workspace work covers all relevant pages/complete aggregates. Never silently narrow scope or top-N-cap required investigation; `max_nodes` is not a census.
+- Filter/project/aggregate before concise output; retain full results in an available store/artifact with recoverable refs. Emit one representation. Preserve errors, warnings, permissions and examined/total/remaining coverage; unsupported conclusions are unknown.
+- Retrieve the complete current body before replacement; excerpts/summaries are insufficient. Details: [context and coverage](references/domain-and-shapes.md#context-and-coverage).
 - Summarize the exact scope actually used
 - State the Knowledge sources used for context
 - Flag weak, ambiguous, unrelated, or absent Knowledge results

@@ -15,15 +15,15 @@ Rubric, anti-patterns, playbooks, and the report template: `pulse://guides/metho
 
 ### 1. Scope
 
-Establish the workspace and team, and confirm with the user what is in scope — one project, one team, or the portfolio. An audit of the wrong scope wastes the run.
+Use the scope the user requested: named/linked/current-task project, team, or explicitly complete workspace. SESSION identifies the workspace, not the project; a repo/workspace name alone does not identify a Pulse project. Ask one targeted scope question only if ambiguity remains. Independent bounded discovery in relevant mapped repositories may continue.
 
-### 2. Enumerate — no writes, and bound it
+### 2. Enumerate — no writes, bounded pages, complete coverage
 
-Pull initiatives, projects, milestones, issues (open **and** closed), documents, and status-update history for the scope. Use `pulse_discover_knowledge` and `pulse_knowledge_context` to read what the work actually is, and `pulse_knowledge_neighbors` for the dependency graph.
+Pull metadata for initiatives, projects, milestones, issues (open **and** closed), documents, and status-update history within that scope. Read bodies/Knowledge only for material candidates; use scoped discovery and dependency neighbors where needed.
 
-List tools page — 20 rows by default, 100 at most — so on any real workspace "read everything" is not achievable. Take distributions from `pulse_analytics_stats` (issues are count-only, grouped by status / priority / type / team / project / assignee) and page rows only where a dimension needs the specifics. Narrowing the scope beats sampling a wide one.
+List tools page — 20 rows by default, 100 at most. Page size is not total scope. For an explicitly complete workspace audit, process all relevant pages or complete `pulse_analytics_stats` aggregates for every dimension. Never silently narrow scope or stop investigation at top N. A bounded graph bundle is not a census.
 
-If the scope is too large to cover, narrow it rather than sampling it. When a dimension still ends up on a partial read, §14's census rule applies — report the sample size, and score anything unmeasurable as unknown.
+Filter/project/aggregate in the caller's execution environment before returning concise evidence. Retain full results in an available store/artifact with recoverable references. Preserve warnings/errors and permission boundaries. If completion is blocked, state examined/total counts when available, remaining scope and the cause; score unmeasurable dimensions unknown. Do not substitute a sample for the requested complete audit.
 
 ### 3. Score (§15)
 

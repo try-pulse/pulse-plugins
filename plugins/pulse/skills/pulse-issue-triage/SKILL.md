@@ -22,8 +22,8 @@ Primary resource:
 
 ## Workflow
 
-1. Establish team scope.
-   - If unclear, use the teams listed in the SESSION block of the Pulse server instructions (or of the `tool_search` description when tools are deferred).
+1. Resolve the named/linked/current-task project or explicitly requested team/workspace scope first.
+   - SESSION lists workspace and teams, not the task's project. A repo/workspace name alone is insufficient; ask one targeted scope question if still ambiguous. Do not scan the workspace to guess. Explicit full-workspace triage covers all relevant pages or complete aggregates; a short output list does not cap investigation.
 2. Resolve project context when needed.
    - Pass the project name to `pulse_list_issues`; only fall back to `pulse_list_project_options` if it comes back ambiguous.
 3. Query `pulse_list_issues`.

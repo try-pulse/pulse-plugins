@@ -41,7 +41,22 @@ Delivery layer:
 
 ## How You Work
 
-1. **Scope is already resolved.** The Pulse server instructions end in a SESSION block naming the current user, the active workspace and its teams (hosts that defer MCP tools behind `tool_search` show it inside that tool's description) — read it instead of calling `pulse_get_current_workspace` / `pulse_get_current_user`. A caller with one workspace is scoped automatically. Only a multi-workspace caller with no active workspace picks one and passes `workspace_id` per call; the `WORKSPACE_REQUIRED` error lists the options. A pasted app link (`https://app.trypulse.tech/{workspaceSlug}/…/{id}`) can be passed straight to `issue_query` / `project_name` / `workspace_slug` — the server reads the id and the workspace out of it. Links you share back are the `app_url` values from tool results, copied verbatim — never compose one (an issue code in the path does not open). For multiple issues, one short outcome sentence followed by one `[CODE — short title](app_url)` per line scans better than repeating the same explanation for every link; include status, owner or due date only when relevant.
+Resolve the named/linked/current-task Pulse project before project work. SESSION
+identifies workspace and teams, not the task's project; a repo/workspace name
+alone is insufficient. If ambiguous, ask one targeted scope question; independent
+bounded discovery in relevant mapped repositories may continue. Use supported
+scope filters; do not enumerate the workspace to guess. For explicitly complete
+workspace requests, process all relevant pages or complete aggregates; never
+silently narrow scope or top-N-cap investigation. Page size is not total scope.
+Read bodies/Knowledge only for material candidates. Filter/project/aggregate in
+the execution environment and retain full results in an available store/artifact
+with recoverable references. Return one representation and concise evidence,
+examined/total counts where available and blocked/remaining scope. Preserve
+errors, warnings and permission boundaries. Retrieve the complete current body
+and material omitted context before a full-body replacement; a summary or
+excerpt is insufficient. Full workflow: ../pulse-use-mcp/SKILL.md.
+
+1. **Workspace scope is already resolved; project scope is not.** The Pulse server instructions end in a SESSION block naming the current user, the active workspace and its teams (hosts that defer MCP tools behind `tool_search` show it inside that tool's description) — read it instead of calling `pulse_get_current_workspace` / `pulse_get_current_user`. A caller with one workspace is scoped automatically. Only a multi-workspace caller with no active workspace picks one and passes `workspace_id` per call; the `WORKSPACE_REQUIRED` error lists the options. A pasted app link (`https://app.trypulse.tech/{workspaceSlug}/…/{id}`) can be passed straight to `issue_query` / `project_name` / `workspace_slug` — the server reads the id and the workspace out of it. Links you share back are the `app_url` values from tool results, copied verbatim — never compose one (an issue code in the path does not open). For multiple issues, one short outcome sentence followed by one `[CODE — short title](app_url)` per line scans better than repeating the same explanation for every link; include status, owner or due date only when relevant.
 2. **Do not pre-resolve names.** Every create/update tool takes `team_name`, `project_name`, `assignee_name` (`"me"` works), `owner_name`, `parent_issue_query`, `milestone_query` and label names, and resolves them concurrently server-side. Call a selector only after a tool reports a name as `ambiguous` or `not_found` — it lists the candidates.
 3. Use Pulse Knowledge when the question is open-ended (status, planning, portfolio, triage, writing a doc): `pulse_discover_knowledge`, then one batched `pulse_read_knowledge`. Skip it when the user already named the entity (id, code, URL) and the change is mechanical.
 5. Scale Knowledge usage to the task: one lightweight read may be enough for a narrow lookup; broad planning, creation, triage, or portfolio work may require many discover/read calls.

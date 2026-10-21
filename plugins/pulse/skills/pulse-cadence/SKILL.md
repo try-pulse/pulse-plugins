@@ -17,6 +17,11 @@ Two modes. Pick by what the user asked for.
 
 **Default is read-only.** Comments on existing issues are allowed. Never mass-create, never reorganise structure — that is `pulse-workspace-audit`.
 
+Apply pulse-use-mcp scope rules before scanning: resolve the named/linked/current-task
+project, team or explicitly requested workspace. SESSION/repo/workspace names alone
+do not identify a Pulse project. If ambiguous, ask one targeted question. Explicit
+complete-workspace scans cover all relevant pages or complete aggregates.
+
 Check in this order. The first group is the signal that matters; the second is the fallback.
 
 **1. Metric-anchored (§13)** — reach for these first:
@@ -38,7 +43,7 @@ Apply §9 rather than guessing. In short: post unasked on a milestone close, a `
 
 ### Output
 
-Findings first, worst first, capped at five with the rest deferred. Then what you changed, if anything, with links. Then one concrete next action.
+Findings first, worst first, with up to five in the concise answer and recoverable references for the rest. This is an output limit, never an investigation cap: state actual coverage and any remaining/blocked scope. Then what you changed, if anything, with links. Then one concrete next action.
 
 ---
 

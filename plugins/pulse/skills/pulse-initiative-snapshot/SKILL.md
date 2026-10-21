@@ -25,7 +25,7 @@ Primary resources:
 
 ## Workflow
 
-1. Start with `pulse_list_initiatives`.
+1. Resolve requested project/initiative/team/workspace scope using pulse-use-mcp before `pulse_list_initiatives`. SESSION/repo/workspace names alone do not identify a Pulse project; ask one targeted question if ambiguous. An explicit complete-workspace snapshot covers all relevant pages or complete aggregates, regardless of concise output.
 2. Use `team_names` or `owner_names` when the user gives human-readable scope.
 3. Review each initiative through:
    - `status`

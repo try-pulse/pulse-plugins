@@ -75,9 +75,27 @@ Filtering and listing:
 
 ## Response Shape Defaults (token efficiency)
 
+### Context and coverage
+
+Explicit complete-workspace requests retain their scope: page all relevant result
+sets or use complete server aggregates for each dimension. Page size, `max_nodes`
+and output brevity are not total-scope limits. Never silently top-N-cap required
+investigation or replace it with a sample. Read bodies/Knowledge only for material
+candidates. Process all relevant results through filtering/projection/aggregation
+before returning concise evidence and examined/total counts where available.
+State remaining or blocked scope and the cause; unsupported conclusions are unknown.
+
+Retain full results in an available caller execution store/artifact with recoverable
+references; emit one representation (`structuredContent` or text). Without a store,
+process bounded pages and preserve source references; never invent hidden storage.
+Projection must preserve errors, warnings and permission boundaries. Before full-body
+replacement, retrieve the complete current body and material omitted context;
+excerpts, previews or projected summaries are insufficient. Prefer supported patches
+when suitable.
+
 - **Rows carry ids; `result_entities` carries the names.** At `minimal` and `standard`, list and get tools no longer repeat a full `team` / `project` / `parent` / `assignee` / `reporter` object on every row — each distinct one is listed once in the page-level `result_entities` index as `{id, name}`. Look ids up there. (`detail: "full"` still returns the raw API shape, signed avatar URLs and all — only ask for it when you genuinely need a field the trimmed shape drops.)
 - `pulse_list_issues`, `pulse_get_issue`, `pulse_get_sub_issues` default to `detail: "standard"`: scalars, ids, `attachments_count`, and a lean `resources[]` catalog (`id`, `title`, `type`, `is_main_doc`, optional link `url`) showing the main writeup vs supplementary Resources. Use `detail: "minimal"` for bulk id lookups.
-- **`limit` is a real cost.** The default 20 is usually right; raise it deliberately. A result over ~100k characters is truncated with a note telling you to narrow the query.
+- **`limit` is page size, not total scope.** The default 20 is usually right; raise it deliberately. Explicit complete-workspace requests require every relevant page or complete aggregates, never a silent top-N cap or reduced scope. Filter/project/aggregate before returning concise evidence and coverage; retain recoverable full-result references in an available store/artifact. A result over ~100k characters is truncated: recover omitted detail when material, especially before replacing a complete body.
 - `include_facets` defaults to `false`. `applied_filters` is always echoed back, so you still know what was filtered.
 - `pulse_list_documents` omits `access_url` by default. If you need the binary, call `pulse_get_document` with the `id` — you'll get a fresh `access_url` plus `body_markdown` for type=document.
 - `pulse_list_metrics` defaults to `detail: "standard"`; use `minimal` for cheap KPI browsing and `full` only when raw owner/team fields are needed. `pulse_record_metric_value return_detail="full"` fetches affected linked KRs.

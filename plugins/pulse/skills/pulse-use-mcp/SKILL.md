@@ -34,7 +34,8 @@ Avoid redundant round trips; batch independent reads and pass names directly:
   repeating the same introduction for every issue or dumping tool JSON. For
   one issue, make its code and title the link label and put the key outcome
   beside it. Expand only when the user asks for details.
-- **Reuse reads.** Keep entity/document results in the execution store when available. Emit relevant fields from `structuredContent` or parsed text, not both/envelopes. Reread only changed/incomplete content or a fresh body needed for a write. Batch independent reads with `pulse_read_knowledge` (`entities`, up to 10).
+- **Reuse reads.** Store results; emit relevant fields from one representation, not envelopes. Reread only changed/incomplete content or a fresh body needed for a write. Batch indexed entities with `pulse_read_knowledge`; attached docs with `pulse_get_document(documents:[{document_id,body_offset?},…])`. Follow every continuation. Metadata/versions/images use single-document mode.
+- **Bound combined output.** Store batched reads, then emit a relevant aggregate, not every full body. Follow returned offsets/page sizes. For `RESULT_PAGE_TOO_LARGE`, apply `error.retry.arguments_patch` to the original arguments, preserving filters/detail; continue pagination to required coverage. Recover missing ranges from stored data before refetching.
 - **Document in the create call.** Pass `main_document.body` to
   `pulse_save_issue` / `pulse_save_project` / … instead of a follow-up
   `pulse_save_document`.
@@ -61,7 +62,9 @@ load matching tools on demand. If you see `tool_search` and no `pulse_*` tool:
 
 Read only the relevant reference for an unknown filter/lifecycle; see
 [the reference index](references/domain-and-shapes.md#reference-resource-index).
-With `ALL_TOOLS`, match `mcp__pulse__pulse_` and the requested operation in
+Pulse: `pulse_search_documentation(target:"tools",query:"list issues")` returns
+names; an exact query with `include_definition:true` returns paged native schemas.
+For other services, with `ALL_TOOLS`, match service and operation in
 `name`, never shared descriptions. Return candidate names only, load selected
 definitions once and reuse them. Catalog entries can repeat the entire server
 guidance: never print full matching entries as a discovery result. See

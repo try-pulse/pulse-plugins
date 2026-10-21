@@ -1,4 +1,24 @@
-# Deferred tool discovery without repeated catalog output
+# Native discovery without repeated namespace output
+
+Pulse exposes native tool discovery through `pulse_search_documentation`:
+
+```json
+{ "target": "tools", "query": "list issues", "limit": 8 }
+```
+
+This searches names only and returns `names`, `total`, `next_offset`. Follow
+`next_offset` with `offset` when complete catalog coverage is needed. Request
+one exact returned name with `include_definition:true` for its complete native
+description, input/output schema and annotations. Concatenate `definition_json`
+pages using `body_meta.next_body_offset` as `offset`, then JSON.parse
+the complete string. This response omits the host's repeated namespace wrapper;
+it preserves the native operation's semantics. Reuse the loaded definition.
+
+This is discovery, not a replacement executor: call the returned native tool
+normally. Toolsets and caller-specific schema restrictions still apply. Bootstrap
+only this tool's host definition once when no native schema loader is available.
+
+## Hosts without native Pulse discovery
 
 Use the host's documented schema loader when available. Otherwise, with an
 execution catalog such as `ALL_TOOLS`, discover by service and operation in
@@ -12,7 +32,8 @@ text(ALL_TOOLS
   .map(t => t.name));
 ```
 
-Load only the tool needed next. Its first definition must include its native
+For another service without native discovery, load only the tool needed next.
+Its first definition must include its native
 behavioral description and argument schema. If no dedicated loader exists,
 emit that one selected entry once; do not print several full entries together:
 

@@ -2,6 +2,18 @@
 
 The long form behind the short lists in [../SKILL.md](../SKILL.md). Read the part you need; `pulse://guides/domain-model` covers the same ground over MCP.
 
+## Reference resource index
+
+Read the reference needed for an unknown filter or lifecycle, not this entire index's targets:
+
+- Domain/workflows: `pulse://guides/domain-model`, `pulse://guides/mcp-workflows`
+- Filters: `pulse://references/issues-filters`, `pulse://references/projects-filters`, `pulse://references/initiatives-filters`, `pulse://references/requests-filters`, `pulse://references/documents-filters`
+- OKRs/metrics: `pulse://references/objectives`, `pulse://references/key-results`, `pulse://references/metrics`
+- Creation: `pulse://references/initiative-creation`, `pulse://references/project-creation`, `pulse://references/issue-creation`
+- Changes: `pulse://references/initiative-updates-deletes`, `pulse://references/project-updates-deletes`, `pulse://references/issue-updates-deletes`
+- Lifecycle: `pulse://references/request-lifecycle`, `pulse://references/documents-lifecycle`, `pulse://references/comments-lifecycle`
+- Wiki/knowledge: `pulse://references/wiki-directory`, `pulse://references/knowledge-api`
+
 ## Domain Model
 
 - Planning hierarchy: `North Star -> Objective -> Key Result -> Initiative`

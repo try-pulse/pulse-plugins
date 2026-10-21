@@ -34,8 +34,7 @@ Avoid redundant round trips; batch independent reads and pass names directly:
   repeating the same introduction for every issue or dumping tool JSON. For
   one issue, make its code and title the link label and put the key outcome
   beside it. Expand only when the user asks for details.
-- **Batch.** `pulse_read_knowledge` accepts `entities: [{entity_type, entity_id}]`
-  (up to 10) and fetches them concurrently. One call, not ten.
+- **Reuse reads.** Keep entity/document results in the execution store when available. Emit relevant fields from `structuredContent` or parsed text, not both/envelopes. Reread only changed/incomplete content or a fresh body needed for a write. Batch independent reads with `pulse_read_knowledge` (`entities`, up to 10).
 - **Document in the create call.** Pass `main_document.body` to
   `pulse_save_issue` / `pulse_save_project` / … instead of a follow-up
   `pulse_save_document`.
@@ -60,30 +59,13 @@ load matching tools on demand. If you see `tool_search` and no `pulse_*` tool:
 
 ## Reference resources — read on demand, not up front
 
-Do **not** read these routinely; they are a few thousand tokens each. Read one
-when you actually need the detail it holds (an unfamiliar filter, a lifecycle
-rule you are unsure of).
-
-- Domain model: `pulse://guides/domain-model`
-- Workflows: `pulse://guides/mcp-workflows`
-- Issues: `pulse://references/issues-filters`
-- Projects: `pulse://references/projects-filters`
-- Initiatives: `pulse://references/initiatives-filters`
-- Requests: `pulse://references/requests-filters`, `pulse://references/request-lifecycle`
-- Objectives: `pulse://references/objectives`
-- Key Results: `pulse://references/key-results`
-- Metrics (incl. record value, history, linked KRs): `pulse://references/metrics`
-- Initiative create: `pulse://references/initiative-creation`
-- Project create: `pulse://references/project-creation`
-- Issue create: `pulse://references/issue-creation`
-- Initiative update/delete: `pulse://references/initiative-updates-deletes`
-- Project update/delete: `pulse://references/project-updates-deletes`
-- Issue update/delete: `pulse://references/issue-updates-deletes`
-- Documents filters: `pulse://references/documents-filters`
-- Documents lifecycle (incl. attach/detach/main-doc): `pulse://references/documents-lifecycle`
-- Team Detail pinned resources / wiki directory: `pulse://references/wiki-directory`
-- Comments, replies & emoji reactions: `pulse://references/comments-lifecycle`
-- Knowledge API (discover/read RAG flow): `pulse://references/knowledge-api`
+Read only the relevant reference for an unknown filter/lifecycle; see
+[the reference index](references/domain-and-shapes.md#reference-resource-index).
+With `ALL_TOOLS`, match `mcp__pulse__pulse_` and the requested operation in
+`name`, never shared descriptions. Return candidate names, then selected full
+definitions; reuse them. Generic words such as `issue` in server descriptions
+match unrelated tools and inflate discovery. For code, locate symbols then read
+relevant ranges instead of concatenating many complete files.
 - Updates / inbox (activity feed, unread count): `pulse://references/updates-filters`
 
 Judgement guides (only for structural or tracking-health work): `pulse://guides/methodology`, `pulse://guides/methodology-audit`.

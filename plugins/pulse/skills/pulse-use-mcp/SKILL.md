@@ -62,9 +62,11 @@ load matching tools on demand. If you see `tool_search` and no `pulse_*` tool:
 Read only the relevant reference for an unknown filter/lifecycle; see
 [the reference index](references/domain-and-shapes.md#reference-resource-index).
 With `ALL_TOOLS`, match `mcp__pulse__pulse_` and the requested operation in
-`name`, never shared descriptions. Return candidate names, then selected full
-definitions; reuse them. Generic words such as `issue` in server descriptions
-match unrelated tools and inflate discovery. For code, locate symbols then read
+`name`, never shared descriptions. Return candidate names only, load selected
+definitions once and reuse them. Catalog entries can repeat the entire server
+guidance: never print full matching entries as a discovery result. See
+[tool discovery examples and host boundaries](references/tool-discovery.md)
+when using an execution catalog. For code, locate symbols then read
 relevant ranges instead of concatenating many complete files.
 - Updates / inbox (activity feed, unread count): `pulse://references/updates-filters`
 
